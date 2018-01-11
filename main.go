@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -12,11 +13,13 @@ import (
 )
 
 func main() {
-	rate := uint64(10000) // per second
+	rate := uint64(100) // per second
 	duration := 3 * time.Second
+
+	url := os.Args[1]
 	targeter := NewFooBarTargeter(vegeta.Target{
 		Method: "GET",
-		URL:    "https://foo-bar.com/ping",
+		URL:    url,
 	})
 	attacker := vegeta.NewAttacker()
 
@@ -29,6 +32,7 @@ func main() {
 	fmt.Printf("total number of requests: %d\n", metrics.Requests)
 	fmt.Printf("99th percentile: %s\n", metrics.Latencies.P99)
 	fmt.Printf("percentage of non-error responses: %g\n", metrics.Success)
+	fmt.Printf("errors: %+v\n", metrics.Errors)
 }
 
 // NewFooBarTargeter returns a Targeter where we calculate a custom header
