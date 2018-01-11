@@ -26,7 +26,9 @@ func main() {
 	}
 	metrics.Close()
 
+	fmt.Printf("total number of requests: %d\n", metrics.Requests)
 	fmt.Printf("99th percentile: %s\n", metrics.Latencies.P99)
+	fmt.Printf("percentage of non-error responses: %g\n", metrics.Success)
 }
 
 // NewFooBarTargeter returns a Targeter where we calculate a custom header
